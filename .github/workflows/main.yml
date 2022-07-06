@@ -11,7 +11,10 @@ on:
     branches: [ "main" ]
 
   workflow_dispatch:
-
+  
+env:
+  S3_BUCKET_NAME: gatesttest
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,23 +43,15 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           
- # 전송할 파일을 담을 디렉토리 생성
-      - name: Make Directory for deliver
-        run: mkdir deploy
-
-      # Jar 파일 Copy
-      - name: Copy Jar
-        run: cp ./build/libs/*.jar
-        working-directory: ./G.ATest
-
-      # 압축파일 형태로 전달
       - name: Make zip file
-        run: zip -r -qq -j ./G.ATest.zip
-        working-directory: ./G.ATest
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
 
-      # S3 Bucket으로 copy
-      - name: Deliver to AWS S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: aws s3 cp \ --region ap-northeast-2 \ --acl private \ ./G.ATest.zip s3://springboot-intro-build/
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip

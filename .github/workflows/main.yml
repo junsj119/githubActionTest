@@ -16,9 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
       - name: Set up JDK 11
@@ -26,13 +24,21 @@ jobs:
         with:
           java-version: 11
           
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
 
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Build with Gradle
+        run: ./gradlew build
+        shell: bash
+          
+#       - name: Run a one-line script
+#         run: echo Hello, world!
+
+#       - name: Run a multi-line script
+#         run: |
+#           echo Add other actions to build,
+#           echo test, and deploy your project.
           
 
           

@@ -26,11 +26,11 @@ jobs:
           
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
-        shell: bash
+        working-directory: ./G.ATest
 
       - name: Build with Gradle
         run: ./gradlew build
-        shell: bash
+        working-directory: ./G.ATest
           
       - name: Run a one-line script
         run: echo Hello, world!

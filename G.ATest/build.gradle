@@ -17,7 +17,9 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.22'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
-
+jar {
+	enabled = false
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }

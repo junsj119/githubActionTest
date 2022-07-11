@@ -8,7 +8,7 @@ public class testController {
 
     @GetMapping("/")
     public String version() {
-        return "zxzxzxzxzxzxzxqweqweqwe";
+        return "index";
     }
 
 }
